@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gem-navy: #0F2942;
+  --color-gem-navyDark: #0A1C2E;
+  --color-gem-navyLight: #18385C;
+  --color-gem-blue: #1E40AF;
+  --color-gem-blueHover: #1D4ED8;
+  --color-gem-accent: #0284C7;
+  --color-gem-sky: #E0F2FE;
+  --color-gem-slate: #F8FAFC;
+  --color-gem-surface: #FFFFFF;
+  --color-gem-border: #E2E8F0;
+  --color-gem-borderDark: #CBD5E1;
+  --color-gem-textMain: #0F172A;
+  --color-gem-textMuted: #475569;
+  --color-gem-textSubtle: #64748B;
+  --color-gem-success: #15803D;
+  --color-gem-successBg: #F0FDF4;
+  --color-gem-warning: #B45309;
+  --color-gem-warningBg: #FFFBEB;
+  --color-gem-danger: #B91C1C;
+  --color-gem-dangerBg: #FEF2F2;
+
+  --shadow-subtle: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-gov: 0 1px 3px 0 rgba(15, 41, 66, 0.08), 0 1px 2px -1px rgba(15, 41, 66, 0.08);
+  --shadow-card: 0 4px 6px -1px rgba(15, 41, 66, 0.06), 0 2px 4px -2px rgba(15, 41, 66, 0.04);
+  --shadow-elevated: 0 10px 15px -3px rgba(15, 41, 66, 0.1), 0 4px 6px -4px rgba(15, 41, 66, 0.05);
+}
+
+body {
+  background-color: #f1f5f9;
+  color: var(--color-gem-textMain);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Print Styles for Forensic Evaluation Report */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+}
