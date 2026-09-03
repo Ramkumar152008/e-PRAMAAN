@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { 
   LayoutDashboard, 
   FileText, 
-  ShieldCheck,
-  MessageSquare,
-  UserCheck,
-  Flame,
-  Store,
-  Settings,
-  KeyRound
+  Users,
+  ShieldCheck, 
+  MessageSquare, 
+  UserCheck, 
+  Flame, 
+  Store, 
+  Settings, 
+  KeyRound 
 } from 'lucide-react';
 import { useApp, NavView } from '../../context/AppContext';
 import { AdminAccessModal } from '../shared/AdminAccessModal';
@@ -21,194 +22,165 @@ export const Sidebar: React.FC<SidebarProps> = () => {
   const { activeView, setActiveView, role, clarifications } = useApp();
   const [showAdminModal, setShowAdminModal] = useState(false);
 
-  interface NavSection {
-    title: string;
-    items: { 
-      id: NavView | 'admin-modal'; 
-      label: string; 
-      icon: any; 
-      matchViews?: NavView[]; 
-      badge?: number;
-      isAction?: boolean;
-    }[];
+  interface NavItem {
+    id: NavView | 'admin-modal';
+    label: string;
+    icon: any;
+    matchViews?: NavView[];
+    badge?: number;
+    isAction?: boolean;
   }
 
-  // 5 Primary Officer Navigation Sections as per Prompt Section 1 & 17
-  const officerNavSections: NavSection[] = [
+  // 6 Core Government Navigation Items
+  const officerNavItems: NavItem[] = [
     {
-      title: 'OVERVIEW',
-      items: [
-        {
-          id: 'dashboard',
-          label: 'Dashboard',
-          icon: LayoutDashboard,
-          matchViews: ['dashboard']
-        }
+      id: 'dashboard',
+      label: 'Dashboard',
+      icon: LayoutDashboard,
+      matchViews: ['dashboard']
+    },
+    {
+      id: 'active-tenders',
+      label: 'Tenders',
+      icon: FileText,
+      matchViews: ['active-tenders', 'tenders', 'tender-details', 'compliance-rules', 'tender-requirement-analysis', 'create-evaluation', 'tender-register']
+    },
+    {
+      id: 'bids-received',
+      label: 'Bids Received',
+      icon: Users,
+      matchViews: ['bids-received', 'bid-overview']
+    },
+    {
+      id: 'bid-verification',
+      label: 'Bid Verification',
+      icon: ShieldCheck,
+      matchViews: [
+        'bid-verification', 
+        'document-review', 
+        'ai-verification', 
+        'government-verification', 
+        'cross-verification', 
+        'temporal-compliance', 
+        'truth-graph', 
+        'compliance-matrix', 
+        'evidence-passport', 
+        'evidence-explorer', 
+        'evidence-review', 
+        'evidence-analysis',
+        'investigation-priority',
+        'investigation',
+        'investigation-queue',
+        'risk-intelligence',
+        'findings-list',
+        'finding-details'
       ]
     },
     {
-      title: 'PROCUREMENT',
-      items: [
-        {
-          id: 'active-tenders',
-          label: 'Tenders',
-          icon: FileText,
-          matchViews: ['active-tenders', 'tenders', 'tender-details', 'compliance-rules', 'tender-requirement-analysis', 'create-evaluation', 'tender-register', 'bids-received']
-        }
-      ]
+      id: 'clarification-center',
+      label: 'Clarifications',
+      icon: MessageSquare,
+      matchViews: ['clarification-center', 'clarifications'],
+      badge: clarifications.some(c => c.status === 'RESPONSE_RECEIVED') ? 1 : undefined
     },
     {
-      title: 'VERIFICATION',
-      items: [
-        {
-          id: 'bid-verification',
-          label: 'Bid Verification',
-          icon: ShieldCheck,
-          matchViews: [
-            'bid-verification', 
-            'document-review', 
-            'ai-verification', 
-            'government-verification', 
-            'cross-verification', 
-            'temporal-compliance', 
-            'truth-graph', 
-            'compliance-matrix', 
-            'evidence-passport', 
-            'evidence-explorer', 
-            'evidence-review', 
-            'evidence-analysis',
-            'investigation-priority',
-            'investigation',
-            'investigation-queue',
-            'risk-intelligence',
-            'findings-list',
-            'finding-details',
-            'bid-overview'
-          ]
-        }
-      ]
-    },
-    {
-      title: 'COMMUNICATION',
-      items: [
-        {
-          id: 'clarification-center',
-          label: 'Clarifications',
-          icon: MessageSquare,
-          matchViews: ['clarification-center'],
-          badge: clarifications.some(c => c.status === 'RESPONSE_RECEIVED') ? 1 : undefined
-        }
-      ]
-    },
-    {
-      title: 'REVIEW',
-      items: [
-        {
-          id: 'decision-review',
-          label: 'Decisions & Reports',
-          icon: UserCheck,
-          matchViews: ['decision-review', 'decision', 'officer-review', 'decision-confirmation', 'report', 'reports', 'report-export', 'audit-trail', 'completed']
-        }
-      ]
-    },
-    {
-      title: 'SYSTEM',
-      items: [
-        {
-          id: 'admin-modal',
-          label: 'Administrative Access',
-          icon: KeyRound,
-          isAction: true
-        }
-      ]
+      id: 'decision-review',
+      label: 'Decisions & Reports',
+      icon: UserCheck,
+      matchViews: ['decision-review', 'decision', 'officer-review', 'decision-confirmation', 'report', 'reports', 'report-export', 'audit-trail', 'completed']
     }
   ];
 
-  const vendorNavSections: NavSection[] = [
+  const vendorNavItems: NavItem[] = [
     {
-      title: 'VENDOR WORKSPACE',
-      items: [
-        {
-          id: 'vendor-portal',
-          label: 'Compliance & Clarifications',
-          icon: Store,
-          matchViews: ['vendor-portal']
-        }
-      ]
+      id: 'vendor-portal',
+      label: 'Compliance & Clarifications',
+      icon: Store,
+      matchViews: ['vendor-portal']
     }
   ];
 
-  const adminNavSections: NavSection[] = [
+  const adminNavItems: NavItem[] = [
     {
-      title: 'ADMINISTRATION',
-      items: [
-        {
-          id: 'admin-console',
-          label: 'Governance & Rules',
-          icon: Settings,
-          matchViews: ['admin-console']
-        }
-      ]
+      id: 'admin-console',
+      label: 'Governance & Rules',
+      icon: Settings,
+      matchViews: ['admin-console']
     }
   ];
 
-  const isNavActive = (item: { id: NavView | 'admin-modal'; matchViews?: NavView[] }): boolean => {
+  const isNavActive = (item: NavItem): boolean => {
     if (item.id === 'admin-modal') return false;
     if (activeView === item.id) return true;
     if (item.matchViews && item.matchViews.includes(activeView)) return true;
     return false;
   };
 
-  const navSections = role === 'VENDOR' ? vendorNavSections : role === 'ADMIN' ? adminNavSections : officerNavSections;
+  const navItems = role === 'VENDOR' ? vendorNavItems : role === 'ADMIN' ? adminNavItems : officerNavItems;
 
   return (
     <>
-      <aside className="w-56 bg-[#0F2942] text-slate-300 flex-shrink-0 flex flex-col h-[calc(100vh-3.5rem)] border-r border-[#0A1D30] select-none text-xs">
+      <aside className="w-56 bg-[#0B2347] text-slate-300 flex-shrink-0 flex flex-col h-[calc(100vh-3.5rem)] border-r border-[#081B38] select-none text-xs">
         
-        {/* Navigation Sections */}
-        <nav className="p-3 space-y-4 flex-1 overflow-y-auto">
-          {navSections.map((section) => (
-            <div key={section.title} className="space-y-1">
-              <p className="px-2.5 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                {section.title}
-              </p>
-              {section.items.map((item) => {
-                const Icon = item.icon;
-                const active = isNavActive(item);
-                
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => {
-                      if (item.id === 'admin-modal') {
-                        setShowAdminModal(true);
-                      } else {
-                        setActiveView(item.id as NavView);
-                      }
-                    }}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs transition text-left cursor-pointer ${
-                      active
-                        ? 'bg-blue-600 text-white font-bold shadow-sm'
-                        : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5 truncate">
-                      <Icon className={`w-4 h-4 flex-shrink-0 ${active ? 'text-white' : 'text-slate-400'}`} />
-                      <span className="truncate">{item.label}</span>
-                    </div>
+        {/* Navigation Header */}
+        <div className="px-3 pt-3.5 pb-1">
+          <p className="px-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+            {role === 'VENDOR' ? 'VENDOR WORKSPACE' : role === 'ADMIN' ? 'ADMINISTRATION' : 'PROCUREMENT WORKFLOW'}
+          </p>
+        </div>
 
-                    {Boolean(item.badge && item.badge > 0) && (
-                      <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-                    )}
-                  </button>
-                );
-              })}
+        {/* Primary Navigation List */}
+        <nav className="py-2 space-y-0.5 flex-1 overflow-y-auto">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const active = isNavActive(item);
+            
+            return (
+              <button
+                key={item.id}
+                onClick={() => {
+                  if (item.id === 'admin-modal') {
+                    setShowAdminModal(true);
+                  } else {
+                    setActiveView(item.id as NavView);
+                  }
+                }}
+                className={`w-full flex items-center justify-between px-3 py-2.5 text-xs transition text-left cursor-pointer border-l-4 ${
+                  active
+                    ? 'border-blue-500 bg-[#163354] text-white font-bold'
+                    : 'border-transparent text-slate-300 hover:bg-[#10294C] hover:text-white'
+                }`}
+              >
+                <div className="flex items-center gap-2.5 truncate">
+                  <Icon className={`w-4 h-4 flex-shrink-0 ${active ? 'text-blue-400' : 'text-slate-400'}`} />
+                  <span className="truncate">{item.label}</span>
+                </div>
+
+                {Boolean(item.badge && item.badge > 0) && (
+                  <span className="px-1.5 py-0.2 bg-amber-500 text-amber-950 font-bold rounded text-[9px] animate-pulse">
+                    Action
+                  </span>
+                )}
+              </button>
+            );
+          })}
+
+          {/* Quick System Action */}
+          {role === 'OFFICER' && (
+            <div className="pt-3 mt-3 border-t border-slate-800/80 px-2">
+              <button
+                onClick={() => setShowAdminModal(true)}
+                className="w-full flex items-center gap-2 px-2 py-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 rounded text-[11px] transition cursor-pointer"
+              >
+                <KeyRound className="w-3.5 h-3.5 text-slate-400" />
+                <span>Admin Governance</span>
+              </button>
             </div>
-          ))}
+          )}
         </nav>
 
         {/* Footer Info */}
-        <div className="p-3.5 bg-[#0A1D30] border-t border-slate-800 text-[11px] text-slate-400 space-y-0.5">
+        <div className="p-3 bg-[#081B38] border-t border-slate-800 text-[11px] text-slate-400 space-y-0.5">
           <div className="flex items-center gap-1.5 text-white font-bold">
             <Flame className="w-3.5 h-3.5 text-amber-400" />
             <span>e-BID PRAMAAN</span>
@@ -228,4 +200,3 @@ export const Sidebar: React.FC<SidebarProps> = () => {
     </>
   );
 };
-

@@ -291,45 +291,45 @@ export const DecisionReviewView: React.FC = () => {
           TAB 1: OFFICER DECISION (Sections 29–35)
       ══════════════════════════════════════════════════════════════════════ */}
       {activeTab === 'DECISION' && (
-        <div className="space-y-5">
+        <div className="space-y-4">
           
           {/* Section 29: 4 Compact Summary Cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-xs">
-              <span className="text-[11px] font-semibold text-slate-500 block">Applicable Requirements</span>
-              <strong className="text-xl font-extrabold text-[#0F2942] mt-0.5 block">9</strong>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <div className="p-3 bg-white rounded-md border border-slate-300 shadow-2xs">
+              <span className="text-[10.5px] font-semibold text-slate-500 block">Applicable Requirements</span>
+              <strong className="text-xl font-bold text-[#0F2942] mt-0.5 block">9</strong>
               <span className="text-[10px] text-slate-500 font-mono">Clauses Identified</span>
             </div>
 
-            <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-xs">
-              <span className="text-[11px] font-semibold text-slate-500 block">Verified</span>
-              <strong className="text-xl font-extrabold text-emerald-700 mt-0.5 block">{isReconciled ? '9 / 9' : '8 / 9'}</strong>
+            <div className="p-3 bg-white rounded-md border border-slate-300 shadow-2xs">
+              <span className="text-[10.5px] font-semibold text-slate-500 block">Verified</span>
+              <strong className="text-xl font-bold text-emerald-700 mt-0.5 block">{isReconciled ? '9 / 9' : '8 / 9'}</strong>
               <span className="text-[10px] text-emerald-700 font-semibold">{isReconciled ? '100% Satisfied' : '1 Under Clarification'}</span>
             </div>
 
-            <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-xs">
-              <span className="text-[11px] font-semibold text-slate-500 block">Issues</span>
-              <strong className={`text-xl font-extrabold mt-0.5 block ${isReconciled ? 'text-slate-700' : 'text-amber-700'}`}>
+            <div className="p-3 bg-white rounded-md border border-slate-300 shadow-2xs">
+              <span className="text-[10.5px] font-semibold text-slate-500 block">Issues</span>
+              <strong className={`text-xl font-bold mt-0.5 block ${isReconciled ? 'text-slate-700' : 'text-amber-700'}`}>
                 {isReconciled ? '0 Pending' : '1 Pending'}
               </strong>
               <span className="text-[10px] text-slate-500">{isReconciled ? 'All Findings Resolved' : 'Review Required'}</span>
             </div>
 
-            <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-xs">
-              <span className="text-[11px] font-semibold text-slate-500 block">Clarifications</span>
-              <strong className="text-xl font-extrabold text-blue-900 mt-0.5 block">{isReconciled ? '1 Resolved' : '0 Resolved'}</strong>
+            <div className="p-3 bg-white rounded-md border border-slate-300 shadow-2xs">
+              <span className="text-[10.5px] font-semibold text-slate-500 block">Clarifications</span>
+              <strong className="text-xl font-bold text-blue-900 mt-0.5 block">{isReconciled ? '1 Resolved' : '0 Resolved'}</strong>
               <span className="text-[10px] text-blue-800">{isReconciled ? 'Undertaking Accepted' : 'Inquiry Pending'}</span>
             </div>
           </div>
 
-          {/* Section 30: AI DECISION SUPPORT (Strict AI Governance Rule) */}
-          <div className="p-4 bg-blue-50/70 border-2 border-blue-200 rounded-xl space-y-3 text-xs">
+          {/* Section 30: DECISION SUPPORT */}
+          <div className="p-3.5 bg-blue-50/70 border border-blue-200 rounded-md space-y-2 text-xs">
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-blue-200 pb-2">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-blue-700" />
-                <span className="font-extrabold text-xs uppercase tracking-wider text-blue-950">AI DECISION SUPPORT</span>
+                <Sparkles className="w-4 h-4 text-blue-800" />
+                <span className="font-bold text-xs uppercase tracking-wider text-blue-950">VERIFICATION DECISION SUPPORT</span>
               </div>
-              <span className="px-2.5 py-0.5 rounded font-extrabold text-[10px] bg-blue-100 text-blue-950 border border-blue-300">
+              <span className="px-2 py-0.5 rounded-sm font-bold text-[10px] bg-blue-100 text-blue-950 border border-blue-300">
                 READY FOR OFFICER DECISION
               </span>
             </div>
@@ -350,7 +350,11 @@ export const DecisionReviewView: React.FC = () => {
               </div>
               <div className="flex items-center gap-1.5 font-medium">
                 <Check className="w-3.5 h-3.5 text-emerald-700" />
-                <span>Bid-date validity confirmed</span>
+                <span>Valid on bid cutoff date</span>
+              </div>
+              <div className="flex items-center gap-1.5 font-medium">
+                <Check className="w-3.5 h-3.5 text-emerald-700" />
+                <span>Tender-specific requirements met</span>
               </div>
               <div className="flex items-center gap-1.5 font-medium">
                 <Check className="w-3.5 h-3.5 text-emerald-700" />
@@ -358,23 +362,21 @@ export const DecisionReviewView: React.FC = () => {
               </div>
               <div className="flex items-center gap-1.5 font-medium">
                 <Check className="w-3.5 h-3.5 text-emerald-700" />
-                <span>No unresolved compliance findings</span>
+                <span>0 outstanding issues</span>
               </div>
             </div>
 
             {/* Mandatory Governance Disclaimer */}
-            <p className="text-[10px] text-blue-900/80 pt-1 border-t border-blue-200/60 italic">
-              "AI provides evidence-based decision support. Final determination remains with the authorized Procurement Officer."
+            <p className="text-[10.5px] text-slate-600 italic pt-1 border-t border-blue-200">
+              Verification provides decision support; final procurement determination remains with the authorized officer.
             </p>
           </div>
 
-          {/* Section 31: VERIFICATION SUMMARY Table */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-gov overflow-hidden text-xs">
-            <div className="p-3.5 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
-              <strong className="text-xs font-bold text-[#0F2942] uppercase tracking-wider">
-                VERIFICATION SUMMARY
-              </strong>
-              <div className="flex items-center gap-3 text-[11px] text-blue-900 font-semibold">
+          {/* Section 31: VERIFICATION SUMMARY TABLE */}
+          <div className="bg-white rounded-md border border-slate-300 shadow-2xs overflow-hidden">
+            <div className="p-3 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+              <span className="font-bold text-xs text-[#0F2942] uppercase tracking-wider">VERIFICATION SUMMARY</span>
+              <div className="flex items-center gap-3 text-xs text-blue-900 font-bold">
                 <button 
                   type="button" 
                   onClick={() => setActiveView('bid-verification')}
@@ -423,29 +425,29 @@ export const DecisionReviewView: React.FC = () => {
           </div>
 
           {/* Section 32 & 33: OFFICER DETERMINATION & REMARKS */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-gov p-6 space-y-5 text-xs">
+          <div className="bg-white rounded-md border border-slate-300 shadow-2xs p-5 space-y-4 text-xs">
             
-            <div className="border-b border-slate-100 pb-3">
-              <h2 className="text-base font-bold text-[#0F2942]">OFFICER DETERMINATION</h2>
+            <div className="border-b border-slate-200 pb-2.5">
+              <h2 className="text-sm font-bold text-[#0F2942] uppercase tracking-wider">OFFICER DETERMINATION</h2>
               <p className="text-slate-500 text-xs mt-0.5">Select the statutory qualification outcome and enter required remarks.</p>
             </div>
 
-            <form onSubmit={handlePreSubmit} className="space-y-5">
+            <form onSubmit={handlePreSubmit} className="space-y-4">
               
               {/* 3 Radio Options */}
               <div className="space-y-2">
                 <label className="font-bold text-slate-800 block text-xs">
                   Determination: <span className="text-red-600">*</span>
                 </label>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5">
                   {determinationOptions.map((opt) => (
                     <label
                       key={opt.key}
                       onClick={() => setSelectedAction(opt.key)}
-                      className={`p-3.5 rounded-xl border-2 cursor-pointer transition flex flex-col justify-between space-y-2 select-none ${
+                      className={`p-3 rounded-md border cursor-pointer transition flex flex-col justify-between space-y-1.5 select-none ${
                         selectedAction === opt.key
-                          ? 'border-[#0F2942] bg-blue-50/40 shadow-xs ring-1 ring-[#0F2942]'
-                          : 'border-slate-200 bg-white hover:border-slate-300'
+                          ? 'border-[#0F2942] bg-blue-50/40 shadow-2xs ring-1 ring-[#0F2942]'
+                          : 'border-slate-300 bg-white hover:border-slate-400'
                       }`}
                     >
                       <div className="flex items-center gap-2">

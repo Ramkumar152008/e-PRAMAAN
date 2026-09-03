@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { AdminAccessModal } from '../shared/AdminAccessModal';
+import { StateEmblem } from '../shared/StateEmblem';
 
 interface HeaderProps {
   onLogout: () => void;
@@ -44,7 +45,7 @@ export const Header: React.FC<HeaderProps> = ({ onLogout }) => {
       <header className="bg-[#0F2942] text-white sticky top-0 z-40 shadow-xs select-none border-b border-[#0A1D30]">
         
         {/* Main Header Bar */}
-        <div className="px-4 sm:px-6 h-13 flex items-center justify-between gap-4">
+        <div className="px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
           
           {/* Left: Canonical Brand & Institutional Subtitle */}
           <div 
@@ -52,27 +53,34 @@ export const Header: React.FC<HeaderProps> = ({ onLogout }) => {
             onClick={() => setActiveView(role === 'VENDOR' ? 'vendor-portal' : role === 'ADMIN' ? 'admin-console' : 'dashboard')}
             title="Return to Dashboard"
           >
-            <div className="w-7 h-7 rounded-md bg-blue-600 flex items-center justify-center shadow-xs border border-white/20">
-              <ShieldCheck className="w-4 h-4 text-white" />
+            {/* Official Indian State Emblem Panel */}
+            <div className="w-10 h-10 bg-white rounded-xl p-0.5 flex items-center justify-center shadow-xs border border-white/20 flex-shrink-0">
+              <StateEmblem className="w-full h-full" />
             </div>
+
             <div>
-              <span className="font-extrabold text-base tracking-wide text-white block leading-tight">
-                e-BID PRAMAAN
-              </span>
-              <p className="text-[10px] text-slate-300 font-normal leading-none hidden sm:block">
+              <div className="flex items-center gap-2">
+                <span className="font-extrabold text-base sm:text-lg tracking-wider text-white block leading-tight">
+                  e-BID PRAMAAN
+                </span>
+                <span className="text-[11px] bg-[#1D4ED8] text-white px-2 py-0.5 rounded-lg border border-blue-400/40 font-bold hidden md:inline-flex items-center">
+                  CPCL
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-300 font-medium leading-none mt-0.5">
                 {role === 'VENDOR' 
-                  ? 'Vendor Compliance & Clarification Workspace' 
+                  ? 'Registered Bidder Compliance & Clarification Workspace' 
                   : role === 'ADMIN'
-                  ? 'System Administration & Governance'
-                  : 'Bid Compliance & Evidence Verification'}
+                  ? 'System Administration & Governance Console'
+                  : 'AI-Powered Bid Compliance Verification Platform'}
               </p>
             </div>
           </div>
 
           {/* Center: Ministry of Petroleum & Natural Gas · CPCL */}
-          <div className="hidden lg:flex items-center gap-1.5 px-3 py-0.5 bg-white/10 rounded-full border border-white/10 text-[11px] font-semibold text-sky-200">
-            <Flame className="w-3.5 h-3.5 text-amber-400" />
-            <span>Ministry of Petroleum & Natural Gas • CPCL</span>
+          <div className="hidden lg:flex items-center gap-2 px-3.5 py-1 bg-white/10 rounded-full border border-white/15 text-[11px] font-semibold text-sky-100 shadow-2xs">
+            <Flame className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+            <span>Chennai Petroleum Corporation Limited (CPCL) • Government Procurement / GeM</span>
           </div>
 
           {/* Right: Notifications + Profile Menu */}
@@ -94,33 +102,36 @@ export const Header: React.FC<HeaderProps> = ({ onLogout }) => {
             <div className="relative" ref={menuRef}>
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
-                className="flex items-center gap-2 px-2.5 py-1 bg-slate-900/80 hover:bg-slate-900 rounded-md border border-slate-700 text-xs transition cursor-pointer"
+                className="flex items-center gap-2 px-2.5 py-1 bg-slate-900/90 hover:bg-slate-900 rounded-lg border border-slate-700 text-xs transition cursor-pointer shadow-2xs"
               >
-                <div className={`w-5 h-5 rounded-full flex items-center justify-center text-white text-[9px] font-bold ${
+                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-[10px] font-extrabold ${
                   role === 'VENDOR' ? 'bg-amber-600' : role === 'ADMIN' ? 'bg-purple-700' : 'bg-blue-700'
                 }`}>
                   {role === 'VENDOR' ? 'VN' : role === 'ADMIN' ? 'AD' : 'PO'}
                 </div>
                 <div className="text-left leading-tight hidden sm:block">
-                  <p className="font-semibold text-white text-[11px]">
-                    {role === 'VENDOR' ? 'ABC Industries' : role === 'ADMIN' ? 'Suresh Menon' : 'Rajeshwar Rao'}
+                  <p className="font-bold text-white text-[11px]">
+                    {role === 'VENDOR' ? 'ABC Industries Pvt Ltd' : role === 'ADMIN' ? 'Suresh Menon' : 'Rajeshwar Rao'}
                   </p>
-                  <p className="text-[9px] text-slate-400 font-mono">
-                    {role === 'VENDOR' ? 'VEN-PET-001' : role === 'ADMIN' ? 'ADMIN-001' : 'PO-1042'}
+                  <p className="text-[9.5px] text-slate-300 font-mono">
+                    {role === 'VENDOR' ? 'VEN-PET-001 • Seller' : role === 'ADMIN' ? 'ADMIN-001 • Governance' : 'Senior Procurement Officer • PO-1042'}
                   </p>
                 </div>
-                <ChevronDown className="w-3 h-3 text-slate-400" />
+                <ChevronDown className="w-3.5 h-3.5 text-slate-400 ml-0.5" />
               </button>
 
               {/* Dropdown Card */}
               {showProfileMenu && (
-                <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 text-xs text-slate-700 animate-in fade-in zoom-in-95 duration-100">
-                  <div className="px-3.5 py-2 border-b border-slate-100">
-                    <p className="font-bold text-[#0F2942]">
+                <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 text-xs text-slate-700 animate-in fade-in zoom-in-95 duration-100">
+                  <div className="px-3.5 py-2.5 border-b border-slate-100 bg-slate-50 rounded-t-xl">
+                    <p className="font-bold text-[#0F2942] text-sm">
                       {role === 'VENDOR' ? 'ABC Industries Pvt Ltd' : role === 'ADMIN' ? 'System Administrator' : 'Rajeshwar Rao'}
                     </p>
-                    <p className="text-[11px] text-slate-500 font-mono">
-                      {role === 'VENDOR' ? 'VEN-PET-001 • Seller' : role === 'ADMIN' ? 'ADMIN-001 • Governance' : 'PO-1042 • Senior Procurement Officer'}
+                    <p className="text-[11px] text-slate-500 font-mono mt-0.5">
+                      {role === 'VENDOR' ? 'VEN-PET-001 • GeM Seller' : role === 'ADMIN' ? 'ADMIN-001 • Governance' : 'PO-1042 • Senior Procurement Officer'}
+                    </p>
+                    <p className="text-[10px] text-slate-400 mt-0.5">
+                      Chennai Petroleum Corporation Limited (CPCL)
                     </p>
                   </div>
 
@@ -134,7 +145,7 @@ export const Header: React.FC<HeaderProps> = ({ onLogout }) => {
                       className="w-full text-left px-3.5 py-2 hover:bg-slate-50 flex items-center gap-2 text-slate-700 font-medium cursor-pointer"
                     >
                       <KeyRound className="w-4 h-4 text-purple-700" />
-                      <span>Administrative Access</span>
+                      <span>Administrative & System Console</span>
                     </button>
                   )}
 
@@ -149,7 +160,7 @@ export const Header: React.FC<HeaderProps> = ({ onLogout }) => {
                       className="w-full text-left px-3.5 py-2 hover:bg-slate-50 flex items-center gap-2 text-slate-700 font-medium cursor-pointer"
                     >
                       <ShieldCheck className="w-4 h-4 text-blue-700" />
-                      <span>Officer Workspace</span>
+                      <span>Officer Procurement Workspace</span>
                     </button>
                   )}
 
@@ -175,16 +186,16 @@ export const Header: React.FC<HeaderProps> = ({ onLogout }) => {
         </div>
 
         {/* ── Section 8: Compact Decision Support Protocol Bar ── */}
-        <div className="px-4 sm:px-6 py-1 bg-[#0A1D30] border-t border-white/10 flex flex-wrap items-center justify-between gap-2 text-[10px] text-slate-300">
-          <div className="flex items-center gap-1.5">
-            <Scale className="w-3 h-3 text-sky-400 flex-shrink-0" />
-            <span className="font-bold text-white uppercase tracking-wider">Decision Support Protocol:</span>
+        <div className="px-4 sm:px-6 py-1.5 bg-[#0A1D30] border-t border-white/10 flex flex-wrap items-center justify-between gap-2 text-[10.5px] text-slate-300">
+          <div className="flex items-center gap-2">
+            <Scale className="w-3.5 h-3.5 text-sky-400 flex-shrink-0" />
+            <span className="font-bold text-white uppercase tracking-wider">Decision Support Principle:</span>
             <span className="text-slate-300">
-              e-BID PRAMAAN provides evidence intelligence for bid verification. The authorized Procurement Officer retains full statutory authority for the final procurement decision.
+              "Tender → Evidence → Verification → Finding → Officer Decision. AI provides decision support. Final procurement decision remains with the authorized officer."
             </span>
           </div>
           <div className="text-[10px] text-sky-300 font-mono hidden md:block">
-            MoPNG / CPCL • Departmental Procurement Access
+            CPCL Manali Refinery • Materials & Contracts (M&C)
           </div>
         </div>
 

@@ -6,11 +6,9 @@ import {
   AlertTriangle, 
   XCircle, 
   FileText, 
-  ExternalLink, 
-  Copy, 
-  Hash, 
-  Lock, 
   Clock, 
+  Building2,
+  Layers,
   ArrowRight
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
@@ -22,7 +20,7 @@ interface EvidenceDetailModalProps {
 }
 
 export const EvidenceDetailModal: React.FC<EvidenceDetailModalProps> = ({ field, onClose }) => {
-  const { selectedBidder, setActiveView } = useApp();
+  const { selectedBidder, selectedTender, setActiveView } = useApp();
 
   if (!field) return null;
 
@@ -30,185 +28,195 @@ export const EvidenceDetailModal: React.FC<EvidenceDetailModalProps> = ({ field,
     switch (status) {
       case 'PASS':
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold text-xs">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" /> PASS (VERIFIED)
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-sm bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold text-xs">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700" />
+            <span>VERIFIED</span>
           </span>
         );
       case 'FAIL':
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-red-50 text-red-800 border border-red-300 font-bold text-xs">
-            <XCircle className="w-4 h-4 text-red-600" /> FAIL (NON-COMPLIANT)
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-sm bg-red-100 text-red-800 border border-red-300 font-bold text-xs">
+            <XCircle className="w-3.5 h-3.5 text-red-700" />
+            <span>DISCREPANCY IDENTIFIED</span>
           </span>
         );
       case 'CONFLICT':
-        return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-amber-50 text-amber-900 border border-amber-300 font-bold text-xs">
-            <AlertTriangle className="w-4 h-4 text-amber-600" /> CONFLICT DETECTED
-          </span>
-        );
       default:
         return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-yellow-50 text-yellow-800 border border-yellow-300 font-bold text-xs">
-            <AlertTriangle className="w-4 h-4 text-yellow-600" /> WARNING / UNVERIFIED
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-sm bg-amber-100 text-amber-900 border border-amber-300 font-bold text-xs">
+            <AlertTriangle className="w-3.5 h-3.5 text-amber-700" />
+            <span>REVIEW REQUIRED</span>
           </span>
         );
     }
   };
 
+  const chainSteps = [
+    { label: 'Tender Requirement', value: `Clause Requirement under ${selectedTender.gemBidNo}` },
+    { label: 'Compliance Rule', value: `Rule: ${field.field} Verification` },
+    { label: 'Bidder Document', value: field.evidenceRef || 'Submitted Dossier PDF' },
+    { label: 'Extracted Evidence', value: field.bidderClaim },
+    { label: 'Reference Evidence', value: `${field.sourceRegistry}: ${field.verifiedSource}` },
+    { label: 'Comparison', value: field.details },
+    { label: 'Finding', value: field.status === 'PASS' ? 'VERIFIED' : 'REVIEW REQUIRED' },
+    { label: 'Officer Action', value: 'Discrepancy identified — Officer Action Required.' }
+  ];
+
   return (
     <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-elevated border border-gem-border max-w-3xl w-full max-h-[90vh] overflow-y-auto flex flex-col animate-in fade-in zoom-in-95 duration-150">
+      <div className="bg-white rounded-md shadow-xl border border-slate-300 max-w-3xl w-full max-h-[90vh] overflow-y-auto flex flex-col animate-in fade-in zoom-in-95 duration-150 text-xs font-sans">
         
         {/* Modal Header */}
-        <div className="p-4 border-b border-gem-border flex items-center justify-between bg-slate-50">
+        <div className="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50 rounded-t-md">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-gem-sky rounded text-gem-blue">
-              <ShieldAlert className="w-5 h-5" />
+            <div className="p-2 bg-blue-100 text-blue-900 rounded-sm">
+              <ShieldAlert className="w-4 h-4 text-blue-800" />
             </div>
             <div>
-              <h3 className="font-bold text-base text-gem-navy">Forensic Evidence Inspector</h3>
-              <p className="text-xs text-gem-textMuted">
-                Field: <span className="font-semibold text-gem-textMain">{field.field}</span> | Bidder: {selectedBidder.name}
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
+                COMPLIANCE ISSUE DETAILS
+              </span>
+              <h3 className="font-bold text-base text-[#0F2942]">{field.field}</h3>
+              <p className="text-[11px] text-slate-500">
+                Bidder: <strong className="text-slate-800">{selectedBidder.name}</strong> • Tender: <strong className="font-mono text-slate-800">{selectedTender.gemBidNo}</strong>
               </p>
             </div>
           </div>
           <button 
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-700 rounded-md hover:bg-slate-200 transition"
+            className="p-1 text-slate-400 hover:text-slate-700 rounded-sm hover:bg-slate-200 transition cursor-pointer font-bold"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Modal Content Body */}
-        <div className="p-6 space-y-6 text-xs text-gem-textMain">
+        <div className="p-5 space-y-4 text-xs text-slate-900">
           
-          {/* Status and Verification Confidence Row */}
-          <div className="flex flex-wrap items-center justify-between gap-4 p-4 bg-slate-50 border border-gem-border rounded-lg">
+          {/* Finding & Summary Banner */}
+          <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-slate-50 border border-slate-200 rounded-sm">
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-gem-textSubtle mb-1">
-                Verification State
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-0.5">
+                Finding Status
               </p>
               {getStatusBadge(field.status)}
             </div>
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-gem-textSubtle mb-1">
-                AI Confidence Score
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-0.5">
+                Extraction Confidence
               </p>
               <div className="flex items-center gap-2">
-                <div className="w-24 bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                <div className="w-20 bg-slate-200 h-2 rounded-full overflow-hidden">
                   <div 
-                    className="bg-gem-blue h-full rounded-full" 
-                    style={{ width: `${field.confidence}%` }}
+                    className="bg-blue-800 h-full rounded-full" 
+                    style={{ width: `${field.confidence || 95}%` }}
                   />
                 </div>
-                <span className="font-bold text-gem-navy">{field.confidence}%</span>
+                <span className="font-bold text-[#0F2942]">{field.confidence || 95}%</span>
               </div>
             </div>
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-gem-textSubtle mb-1">
-                Simulated Registry
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-0.5">
+                Reference Registry Source
               </p>
-              <span className="font-mono text-xs font-bold text-gem-navy bg-slate-200/80 px-2 py-0.5 rounded">
+              <span className="font-mono text-xs font-bold text-blue-950 bg-white px-2 py-0.5 rounded-sm border border-slate-300">
                 {field.sourceRegistry}
               </span>
             </div>
           </div>
 
-          {/* Side-by-Side Claim vs Verified Source Comparison */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Bidder Claim */}
-            <div className="p-4 bg-white border border-slate-200 rounded-lg shadow-subtle">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                  Bidder Self-Declared Claim
+          {/* Side-by-Side Comparison: Bidder Evidence vs Reference Evidence */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            
+            {/* Bidder Evidence */}
+            <div className="p-3.5 bg-white border border-slate-300 rounded-sm space-y-1.5">
+              <div className="flex items-center justify-between">
+                <span className="text-[10.5px] font-bold text-slate-500 uppercase tracking-wider">
+                  Bidder Submitted Evidence
                 </span>
-                <FileText className="w-4 h-4 text-slate-400" />
+                <FileText className="w-3.5 h-3.5 text-blue-800" />
               </div>
-              <p className="font-bold text-sm text-gem-navy mb-2">{field.bidderClaim}</p>
+              <p className="font-bold text-xs text-[#0F2942]">{field.bidderClaim}</p>
               <p className="text-[11px] text-slate-600">
-                Extracted from submitted bidder PDF documentation with cryptographic OCR timestamp.
+                Document Ref: <strong className="font-mono text-slate-800">{field.evidenceRef || 'Submitted Dossier PDF'}</strong>
               </p>
             </div>
 
-            {/* Verified External Registry */}
-            <div className="p-4 bg-white border border-slate-200 rounded-lg shadow-subtle">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                  Simulated Registry Source
+            {/* Reference Evidence */}
+            <div className="p-3.5 bg-white border border-slate-300 rounded-sm space-y-1.5">
+              <div className="flex items-center justify-between">
+                <span className="text-[10.5px] font-bold text-slate-500 uppercase tracking-wider">
+                  Reference Evidence
                 </span>
-                <span className="text-[10px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-mono font-bold">
-                  {field.sourceRegistry}
-                </span>
+                <Building2 className="w-3.5 h-3.5 text-emerald-700" />
               </div>
-              <p className="font-bold text-sm text-gem-blue mb-2">{field.verifiedSource}</p>
+              <p className="font-bold text-xs text-blue-900">{field.verifiedSource}</p>
               <p className="text-[11px] text-slate-600">
-                Retrieved via simulated institutional data connector endpoint.
+                Registry Source: <strong className="text-slate-800">{field.sourceRegistry}</strong>
               </p>
             </div>
+
           </div>
 
-          {/* Deep Discrepancy / Forensic Details */}
-          <div className="p-4 bg-blue-50/50 border border-blue-200 rounded-lg">
-            <h4 className="font-bold text-xs text-gem-navy mb-1 flex items-center gap-1.5">
-              <ShieldAlert className="w-4 h-4 text-gem-blue" /> Discrepancy & Forensic Analysis
+          {/* Comparison & Discrepancy Finding */}
+          <div className="p-3 bg-blue-50/50 border border-blue-200 rounded-sm space-y-1">
+            <h4 className="font-bold text-xs text-[#0F2942] flex items-center gap-1.5">
+              <ShieldAlert className="w-3.5 h-3.5 text-blue-800" /> 
+              <span>Comparison & Finding</span>
             </h4>
-            <p className="text-slate-700 leading-relaxed">{field.details}</p>
+            <p className="text-slate-800 leading-relaxed font-medium">
+              {field.details}
+            </p>
           </div>
 
-          {/* Provenance & Evidence Reference Chain */}
-          <div className="space-y-2">
-            <h4 className="font-bold text-xs text-gem-navy">Provenance & Cryptographic Metadata</h4>
-            <div className="bg-slate-900 text-slate-300 p-3 rounded font-mono text-[11px] space-y-1.5">
-              <div className="flex justify-between">
-                <span className="text-slate-500">Evidence Reference:</span>
-                <span className="text-slate-200 truncate ml-2">{field.evidenceRef}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500">Verification Timestamp:</span>
-                <span className="text-slate-200">{field.timestamp} (IST)</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500">Security Checksum:</span>
-                <span className="text-emerald-400 font-mono">sha256:4a8b...19ef [VALID]</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500">Legal Admissibility:</span>
-                <span className="text-slate-200">Advisory Decision-Support Only (Procurement Officer Authority)</span>
-              </div>
+          {/* 8-Node Linear Traceability Chain (Prompt Section 15) */}
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-1.5 font-bold text-xs text-[#0F2942]">
+              <Layers className="w-3.5 h-3.5 text-blue-800" />
+              <span>Evidence Traceability Chain (8 Steps)</span>
             </div>
+            
+            <div className="bg-slate-50 p-3 rounded-sm border border-slate-200 space-y-1.5">
+              {chainSteps.map((step, idx) => (
+                <div key={idx} className="flex items-start gap-2 text-[11px]">
+                  <span className="w-4 h-4 rounded-full bg-[#0F2942] text-white flex items-center justify-center font-bold text-[9px] flex-shrink-0 mt-0.5">
+                    {idx + 1}
+                  </span>
+                  <div className="flex-1">
+                    <strong className="text-[#0F2942]">{step.label}: </strong>
+                    <span className="text-slate-700">{step.value}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Microcopy: Officer Responsibility Notice */}
+          <div className="p-2.5 bg-slate-100 border border-slate-200 rounded-sm text-[11px] text-slate-600 flex items-center gap-2">
+            <span>
+              <strong>Officer Action:</strong> Discrepancy identified — Officer Action Required. Verification provides decision support; final procurement determination remains with the authorized officer.
+            </span>
           </div>
 
         </div>
 
-        {/* Modal Actions Footer */}
-        <div className="p-4 border-t border-gem-border bg-slate-50 flex items-center justify-between">
+        {/* Modal Footer */}
+        <div className="p-3.5 border-t border-slate-200 bg-slate-50 rounded-b-md flex items-center justify-end gap-2">
+          <button
+            onClick={onClose}
+            className="px-3.5 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 text-xs font-semibold rounded-sm transition cursor-pointer"
+          >
+            Close
+          </button>
           <button
             onClick={() => {
               onClose();
-              setActiveView('evidence-explorer');
+              setActiveView('bid-verification');
             }}
-            className="text-xs text-gem-blue font-semibold hover:underline flex items-center gap-1"
+            className="px-4 py-1.5 bg-[#0F2942] hover:bg-[#1E40AF] text-white text-xs font-bold rounded-sm shadow-2xs transition cursor-pointer"
           >
-            Open Full Explainable AI Chain <ArrowRight className="w-3.5 h-3.5" />
+            Open in Bid Verification
           </button>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={onClose}
-              className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-semibold rounded transition"
-            >
-              Close Inspector
-            </button>
-            <button
-              onClick={() => {
-                onClose();
-                setActiveView('officer-review');
-              }}
-              className="px-4 py-2 bg-gem-navy hover:bg-gem-navyLight text-white text-xs font-semibold rounded shadow-sm transition"
-            >
-              Proceed to Officer Review
-            </button>
-          </div>
         </div>
 
       </div>

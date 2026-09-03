@@ -164,7 +164,7 @@ export const StepProgressBar: React.FC = () => {
             className="hover:text-blue-900 font-medium flex items-center gap-1 transition cursor-pointer"
           >
             <Home className="w-3 h-3 text-slate-400" />
-            <span>Dashboard</span>
+            <span>Home</span>
           </button>
 
           <ChevronRight className="w-3 h-3 text-slate-300 flex-shrink-0" />
@@ -181,8 +181,8 @@ export const StepProgressBar: React.FC = () => {
               <ChevronRight className="w-3 h-3 text-slate-300 flex-shrink-0" />
               <button 
                 onClick={() => setActiveView('tender-details')} 
-                className="hover:text-blue-900 font-mono font-medium transition max-w-[150px] truncate cursor-pointer"
-                title={selectedTender.title}
+                className="hover:text-blue-900 font-mono font-bold text-blue-950 transition max-w-[150px] truncate cursor-pointer"
+                title={`${selectedTender.gemBidNo} — ${selectedTender.title}`}
               >
                 {selectedTender.gemBidNo}
               </button>
@@ -193,8 +193,16 @@ export const StepProgressBar: React.FC = () => {
             <>
               <ChevronRight className="w-3 h-3 text-slate-300 flex-shrink-0" />
               <button 
+                onClick={() => setActiveView('bids-received')} 
+                className="hover:text-blue-900 font-medium transition cursor-pointer"
+              >
+                Bids
+              </button>
+              
+              <ChevronRight className="w-3 h-3 text-slate-300 flex-shrink-0" />
+              <button 
                 onClick={() => setActiveView('bid-verification')} 
-                className="hover:text-blue-900 font-semibold transition max-w-[140px] truncate cursor-pointer"
+                className="hover:text-blue-900 font-semibold transition max-w-[140px] truncate cursor-pointer text-slate-700"
                 title={selectedBidder.name}
               >
                 {selectedBidder.name.split(' ')[0]}
@@ -202,14 +210,36 @@ export const StepProgressBar: React.FC = () => {
             </>
           )}
 
-          <ChevronRight className="w-3 h-3 text-slate-300 flex-shrink-0" />
-          <span className="font-bold text-[#0F2942]">
-            {getActiveViewTitle()}
-          </span>
+          {activeView !== 'dashboard' && activeView !== 'active-tenders' && activeView !== 'tender-details' && activeView !== 'bids-received' && activeView !== 'bid-verification' && (
+            <>
+              <ChevronRight className="w-3 h-3 text-slate-300 flex-shrink-0" />
+              <span className="font-bold text-[#0F2942]">
+                {getActiveViewTitle()}
+              </span>
+            </>
+          )}
+
+          {activeView === 'bid-verification' && (
+            <>
+              <ChevronRight className="w-3 h-3 text-slate-300 flex-shrink-0" />
+              <span className="font-bold text-[#0F2942]">
+                Bid Verification
+              </span>
+            </>
+          )}
+
+          {activeView === 'bids-received' && (
+            <>
+              <ChevronRight className="w-3 h-3 text-slate-300 flex-shrink-0" />
+              <span className="font-bold text-[#0F2942]">
+                Bids Received
+              </span>
+            </>
+          )}
         </div>
 
-        {/* 5-Step Workflow Stepper */}
-        <div className="hidden lg:flex items-center gap-1 text-[10px]">
+        {/* 5-Step Workflow Process Indicator (Prompt Section 10) */}
+        <div className="hidden lg:flex items-center gap-1.5 text-[11px]">
           {workflowStages.map((st, idx) => {
             const isCurrent = st.stepNumber === currentStage.stepNumber;
             const isPast = st.stepNumber < currentStage.stepNumber;
@@ -217,19 +247,27 @@ export const StepProgressBar: React.FC = () => {
               <React.Fragment key={st.id}>
                 <button
                   onClick={() => setActiveView(st.targetView)}
-                  className={`px-2 py-0.5 rounded transition cursor-pointer flex items-center gap-1 ${
+                  className={`flex items-center gap-1 px-1.5 py-0.5 rounded transition cursor-pointer text-left ${
                     isCurrent
-                      ? 'bg-blue-600 text-white font-bold shadow-2xs'
+                      ? 'text-blue-900 font-bold bg-blue-100/70 border border-blue-300'
                       : isPast
-                      ? 'bg-emerald-50 text-emerald-800 font-semibold hover:bg-emerald-100'
-                      : 'text-slate-400 hover:text-slate-700'
+                      ? 'text-emerald-800 font-medium hover:text-emerald-950'
+                      : 'text-slate-400 hover:text-slate-600'
                   }`}
                 >
-                  {isPast && <Check className="w-2.5 h-2.5 text-emerald-600" />}
-                  <span>{st.label}</span>
+                  <span className={`w-3.5 h-3.5 rounded-full flex items-center justify-center text-[9px] font-bold ${
+                    isCurrent 
+                      ? 'bg-[#0F2942] text-white' 
+                      : isPast 
+                      ? 'bg-emerald-600 text-white' 
+                      : 'border border-slate-300 text-slate-400 bg-white'
+                  }`}>
+                    {isPast ? '✓' : st.stepNumber}
+                  </span>
+                  <span>{st.label.split('. ')[1]}</span>
                 </button>
                 {idx < workflowStages.length - 1 && (
-                  <span className="text-slate-300 font-bold">›</span>
+                  <span className="text-slate-300 text-xs font-bold">→</span>
                 )}
               </React.Fragment>
             );
@@ -241,3 +279,4 @@ export const StepProgressBar: React.FC = () => {
     </div>
   );
 };
+

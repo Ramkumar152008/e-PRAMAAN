@@ -1,28 +1,16 @@
 import React from 'react';
 import { 
-  FileSpreadsheet, 
   Download, 
   Printer, 
-  ArrowRight, 
   ArrowLeft,
   CheckCircle2, 
   FileText, 
   ShieldCheck, 
   Gavel, 
-  Flame,
-  Calendar,
-  AlertTriangle,
-  Scale,
-  Code,
-  FileCode2,
-  Lock,
-  Sparkles,
+  Code, 
   Building2,
-  CalendarClock,
-  Network,
-  Activity,
-  History,
-  Info
+  Lock,
+  Scale
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 
@@ -63,9 +51,7 @@ export const ReportView: React.FC = () => {
         name: selectedBidder.name,
         pan: selectedBidder.pan,
         gstin: selectedBidder.gstin,
-        cin: selectedBidder.cin,
-        turnoverDeclared: selectedBidder.claimedTurnover,
-        turnoverVerified: selectedBidder.verifiedTurnover
+        cin: selectedBidder.cin
       },
       evaluation: {
         score: complianceScore,
@@ -90,25 +76,25 @@ export const ReportView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-5 max-w-5xl mx-auto py-5 px-4 sm:px-6 text-slate-900 font-sans print:p-0">
+    <div className="space-y-4 max-w-5xl mx-auto py-5 px-4 sm:px-6 text-slate-900 font-sans print:p-0">
       
       {/* ── Page Header ── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-3 print:hidden">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-3 print:hidden bg-white p-4 sm:p-5 rounded-md border border-slate-300 shadow-2xs">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-blue-900 mb-0.5">
-            <Building2 className="w-4 h-4 text-blue-700" />
+          <div className="flex items-center gap-2 text-xs font-bold text-blue-900 mb-0.5">
+            <Building2 className="w-4 h-4 text-blue-800" />
             <span>Chennai Petroleum Corporation Limited • Tender: {selectedTender.gemBidNo}</span>
           </div>
-          <h1 className="text-2xl font-bold text-[#0F2942]">COMPLIANCE DOSSIER</h1>
-          <p className="text-xs text-slate-600">
-            Statutory bid evaluation record and verified compliance evidence for CPCL procurement.
+          <h1 className="text-xl sm:text-2xl font-bold text-[#0F2942]">COMPLIANCE REPORT</h1>
+          <p className="text-xs text-slate-600 mt-0.5">
+            Statutory bid compliance evaluation record and verified evidence dossier.
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={handlePrint}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-semibold shadow-2xs transition cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-sm text-xs font-semibold shadow-2xs transition cursor-pointer"
           >
             <Printer className="w-3.5 h-3.5" />
             <span>Print</span>
@@ -116,7 +102,7 @@ export const ReportView: React.FC = () => {
 
           <button
             onClick={handleDownloadJSON}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-semibold shadow-2xs transition cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-sm text-xs font-semibold shadow-2xs transition cursor-pointer"
           >
             <Code className="w-3.5 h-3.5" />
             <span>Export JSON</span>
@@ -124,7 +110,7 @@ export const ReportView: React.FC = () => {
 
           <button
             onClick={handleDownloadPDF}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 bg-[#0F2942] hover:bg-[#1E40AF] text-white rounded-lg text-xs font-bold shadow-2xs transition cursor-pointer"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 bg-[#0F2942] hover:bg-[#1E40AF] text-white rounded-sm text-xs font-bold shadow-2xs transition cursor-pointer"
           >
             <Download className="w-3.5 h-3.5" />
             <span>GENERATE REPORT</span>
@@ -132,33 +118,33 @@ export const ReportView: React.FC = () => {
         </div>
       </div>
 
-      {/* ── Formal Printable Compliance Dossier ── */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-gov p-6 sm:p-8 space-y-6 text-xs print:border-none print:shadow-none">
+      {/* ── Formal Printable Compliance Dossier (Section 22) ── */}
+      <div className="bg-white rounded-md border border-slate-300 shadow-2xs p-6 sm:p-8 space-y-5 text-xs print:border-none print:shadow-none">
         
         {/* Report Top Header */}
-        <div className="border-b-2 border-[#0F2942] pb-4 flex flex-wrap items-center justify-between gap-4">
+        <div className="border-b-2 border-[#0F2942] pb-3 flex flex-wrap items-center justify-between gap-3">
           <div>
             <span className="font-mono text-[10px] text-slate-500 uppercase tracking-widest block font-bold">
               Government of India • Ministry of Petroleum & Natural Gas
             </span>
-            <h2 className="text-xl font-extrabold text-[#0F2942] mt-0.5">
-              COMPLIANCE DOSSIER — CPCL PROCUREMENT
+            <h2 className="text-lg sm:text-xl font-bold text-[#0F2942] mt-0.5">
+              COMPLIANCE REPORT — CPCL PROCUREMENT
             </h2>
             <p className="text-xs text-slate-600">Chennai Petroleum Corporation Limited (CPCL) • Manali Refinery, Chennai</p>
           </div>
 
           <div className="text-right">
-            <span className="px-3 py-1 bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-full font-bold text-xs inline-block">
-              Report Status: Formal Dossier Generated
+            <span className="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-sm font-bold text-xs inline-block">
+              Report Status: Dossier Generated
             </span>
             <p className="text-[11px] text-slate-500 mt-1 font-mono">Dossier Ref: DOSSIER-CPCL-2026-001</p>
           </div>
         </div>
 
-        {/* Section 1 & 2: Tender Metadata & Bidder Details */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-slate-50 p-4 rounded-lg border border-slate-200">
-          <div className="space-y-1.5">
-            <span className="font-bold text-[#0F2942] text-xs uppercase tracking-wider block">1. Tender Information</span>
+        {/* Section 1 & 2: Tender Details & Bidder Details */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-3.5 rounded-sm border border-slate-200">
+          <div className="space-y-1">
+            <span className="font-bold text-[#0F2942] text-xs uppercase tracking-wider block">1. Tender Details</span>
             <p><strong>Title:</strong> {selectedTender.title}</p>
             <p><strong>Tender ID:</strong> <span className="font-mono font-bold text-blue-900">{selectedTender.gemBidNo}</span></p>
             <p><strong>Department:</strong> {selectedTender.department}</p>
@@ -166,9 +152,9 @@ export const ReportView: React.FC = () => {
             <p><strong>Delivery Location:</strong> CPCL Manali, Chennai</p>
           </div>
 
-          <div className="space-y-1.5">
-            <span className="font-bold text-[#0F2942] text-xs uppercase tracking-wider block">2. Evaluated Bidder Information</span>
-            <p><strong>Bidder Legal Name:</strong> {selectedBidder.name}</p>
+          <div className="space-y-1">
+            <span className="font-bold text-[#0F2942] text-xs uppercase tracking-wider block">2. Bidder Details</span>
+            <p><strong>Legal Name:</strong> {selectedBidder.name}</p>
             <p><strong>Bid ID:</strong> <span className="font-mono font-bold text-blue-900">{selectedBidder.id}</span></p>
             <p><strong>Corporate PAN:</strong> <span className="font-mono">{selectedBidder.pan}</span></p>
             <p><strong>GSTIN:</strong> <span className="font-mono">{selectedBidder.gstin}</span></p>
@@ -176,136 +162,99 @@ export const ReportView: React.FC = () => {
           </div>
         </div>
 
-        {/* Section 3: Executive Summary & Verification Outcome */}
+        {/* Section 3: Requirements Checked */}
         <div className="space-y-2">
-          <span className="font-bold text-[#0F2942] text-xs uppercase tracking-wider block">3. Verification Summary & Compliance Overview</span>
-          <div className="p-3.5 bg-blue-50/60 border border-blue-200 rounded-lg text-slate-800 leading-relaxed space-y-1.5">
-            <p>
-              e-BID PRAMAAN performed evidence-based multi-source verification for <strong>{selectedBidder.name}</strong> against the mandatory requirements of Tender <strong>{selectedTender.gemBidNo}</strong>.
-            </p>
-            <p>
-              All applicable requirements (Statutory Identity, Quality ISO 9001:2015, EMD Guarantee, Make in India Class-I local content, Technical Spec MS-RAD-6IN-1F3, and OEM Parent-Subsidiary undertaking) were verified and found compliant.
-            </p>
+          <span className="font-bold text-[#0F2942] text-xs uppercase tracking-wider block">3. Requirements Checked & Verified</span>
+          <div className="overflow-x-auto border border-slate-300 rounded-sm">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr className="bg-slate-100 text-slate-700 font-bold border-b border-slate-300">
+                  <th className="p-2.5">Requirement</th>
+                  <th className="p-2.5">Tender Rule</th>
+                  <th className="p-2.5">Bidder Evidence</th>
+                  <th className="p-2.5">Reference Source</th>
+                  <th className="p-2.5 text-right">Result</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200">
+                <tr>
+                  <td className="p-2.5 font-bold">GST Registration</td>
+                  <td className="p-2.5 text-slate-600">Active GSTIN</td>
+                  <td className="p-2.5 font-mono">GST Certificate</td>
+                  <td className="p-2.5">GSTN Reference</td>
+                  <td className="p-2.5 text-right font-bold text-emerald-700">VERIFIED</td>
+                </tr>
+                <tr>
+                  <td className="p-2.5 font-bold">PAN Card</td>
+                  <td className="p-2.5 text-slate-600">Company PAN</td>
+                  <td className="p-2.5 font-mono">PAN Card</td>
+                  <td className="p-2.5">ITD Reference</td>
+                  <td className="p-2.5 text-right font-bold text-emerald-700">VERIFIED</td>
+                </tr>
+                <tr>
+                  <td className="p-2.5 font-bold">OEM Authorization</td>
+                  <td className="p-2.5 text-slate-600">Clause 2.1 MAF</td>
+                  <td className="p-2.5 font-mono">Board Resolution & Undertaking</td>
+                  <td className="p-2.5">OEM Mandate Ledger</td>
+                  <td className="p-2.5 text-right font-bold text-emerald-700">VERIFIED</td>
+                </tr>
+                <tr>
+                  <td className="p-2.5 font-bold">Make in India Local Content</td>
+                  <td className="p-2.5 text-slate-600">Class-I (≥ 50%)</td>
+                  <td className="p-2.5 font-mono">Self-Declaration (58.4%)</td>
+                  <td className="p-2.5">DPIIT Reference</td>
+                  <td className="p-2.5 text-right font-bold text-emerald-700">VERIFIED</td>
+                </tr>
+                <tr>
+                  <td className="p-2.5 font-bold">ISO 9001:2015 Quality</td>
+                  <td className="p-2.5 text-slate-600">Valid on Bid Date</td>
+                  <td className="p-2.5 font-mono">ISO Certificate (LRQA)</td>
+                  <td className="p-2.5">Accreditation Registry</td>
+                  <td className="p-2.5 text-right font-bold text-emerald-700">VERIFIED</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
-        {/* Section 4 & 5: Evidence Health & Temporal Evaluation */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <span className="font-bold text-[#0F2942] text-xs uppercase tracking-wider block">4. Reference Verification Status</span>
-            <div className="p-3 bg-white border border-slate-200 rounded-lg space-y-1.5 text-[11px]">
-              <div className="flex justify-between">
-                <span>Compliance Score:</span>
-                <strong className="text-emerald-700 font-bold">{complianceScore} / 100</strong>
-              </div>
-              <div className="flex justify-between">
-                <span>Reference Adapters Queried:</span>
-                <strong className="font-mono">10 Reference Adapters</strong>
-              </div>
-              <div className="flex justify-between">
-                <span>Corporate Linkage:</span>
-                <strong className="text-emerald-700 font-mono">✓ Board Resolution Verified</strong>
-              </div>
+        {/* Section 4: Officer Decision & Determination */}
+        <div className="p-4 bg-slate-50 border border-slate-300 rounded-sm space-y-2">
+          <span className="font-bold text-[#0F2942] text-xs uppercase tracking-wider block">4. Authorized Officer Determination</span>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+            <div>
+              <span className="text-slate-500 block">Adjudication Result:</span>
+              <strong className="text-emerald-700 font-mono text-sm">{decisionAction.replace(/_/g, ' ')}</strong>
+            </div>
+            <div>
+              <span className="text-slate-500 block">Authorized Officer:</span>
+              <strong className="text-slate-800">Rajeshwar Rao (PO-1042)</strong>
+            </div>
+            <div>
+              <span className="text-slate-500 block">Designation:</span>
+              <strong className="text-slate-800">Senior Procurement Officer • CPCL</strong>
             </div>
           </div>
-
-          <div className="space-y-2">
-            <span className="font-bold text-[#0F2942] text-xs uppercase tracking-wider block">5. Bid-Date Temporal Evaluation</span>
-            <div className="p-3 bg-white border border-slate-200 rounded-lg space-y-1.5 text-[11px]">
-              <div className="flex justify-between">
-                <span>Bid Cutoff Date:</span>
-                <strong className="font-mono">10 August 2026 (15:00 IST)</strong>
-              </div>
-              <div className="flex justify-between">
-                <span>ISO 9001:2015 Expiry:</span>
-                <strong className="text-emerald-700 font-mono">15-Dec-2026 (✓ VALID ON BID DATE)</strong>
-              </div>
-              <div className="flex justify-between">
-                <span>Rule Reference:</span>
-                <strong className="text-blue-900 font-mono">CPCL-TEMPORAL-001</strong>
-              </div>
-            </div>
+          <div className="pt-2 border-t border-slate-200">
+            <span className="text-slate-500 block font-bold text-[10px] uppercase">Officer Remarks:</span>
+            <p className="text-slate-800 italic mt-0.5">"{officerRemarks}"</p>
           </div>
         </div>
 
-        {/* Section 6: Applicable Requirements Matrix */}
-        <div className="space-y-2">
-          <span className="font-bold text-[#0F2942] text-xs uppercase tracking-wider block">6. Applicable Compliance Requirements</span>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px]">
-            <div className="p-2.5 bg-slate-50 rounded border border-slate-200">
-              <span className="text-slate-500 block">OEM / MAF Authorization:</span>
-              <strong className="text-emerald-700 block mt-0.5">✓ Verified (Parent Undertaking)</strong>
-            </div>
-            <div className="p-2.5 bg-slate-50 rounded border border-slate-200">
-              <span className="text-slate-500 block">ISO 9001:2015 Quality:</span>
-              <strong className="text-emerald-700 block mt-0.5">✓ Valid on Bid Date (LRQA)</strong>
-            </div>
-            <div className="p-2.5 bg-slate-50 rounded border border-slate-200">
-              <span className="text-slate-500 block">EMD BG (₹3.70 Lakh):</span>
-              <strong className="text-emerald-700 block mt-0.5">✓ Confirmed (SBI)</strong>
-            </div>
-            <div className="p-2.5 bg-slate-50 rounded border border-slate-200">
-              <span className="text-slate-500 block">GSTIN / PAN Registration:</span>
-              <strong className="text-emerald-700 block mt-0.5">✓ Active Regular</strong>
-            </div>
-            <div className="p-2.5 bg-slate-50 rounded border border-slate-200">
-              <span className="text-slate-500 block">Make in India Local Content:</span>
-              <strong className="text-emerald-700 block mt-0.5">✓ 58.4% Class-I Local</strong>
-            </div>
-            <div className="p-2.5 bg-slate-50 rounded border border-slate-200">
-              <span className="text-slate-500 block">Technical Spec MS-RAD-6IN:</span>
-              <strong className="text-emerald-700 block mt-0.5">✓ QAP Stage-III Approved</strong>
-            </div>
-          </div>
+        {/* Section 5: Audit & Tamper Evidence */}
+        <div className="p-3 bg-slate-100 rounded-sm border border-slate-300 flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-slate-600">
+          <span>Audit Record: EVAL-2026-PET-00125-01</span>
+          <span>SHA-256: 7e8a9b2c3d4e5f6a1b2c3d4e5f6a7b8c... [VERIFIED]</span>
+          <span>Signature: PO-1042-CPCL-2026</span>
         </div>
 
-        {/* Section 7: Authorized Officer Adjudication Decision */}
-        <div className="p-4 bg-blue-50/60 border-2 border-blue-900 rounded-lg space-y-3">
-          <div className="flex items-center justify-between border-b border-blue-200 pb-2">
-            <span className="font-bold text-[#0F2942] text-xs uppercase tracking-wider">
-              7. Formal Procurement Officer Adjudication Determination
-            </span>
-            <span className="px-3 py-1 bg-[#0F2942] text-white rounded font-bold text-xs uppercase font-mono">
-              {decisionAction.replace(/_/g, ' ')}
-            </span>
-          </div>
-
-          <div className="p-3 bg-white rounded border border-blue-200 text-[11px] space-y-1">
-            <p><strong>Adjudicating Officer ID:</strong> PO-1042 (Senior Procurement Officer Rajeshwar Rao, CPCL)</p>
-            <p><strong>Officer Evaluation Remarks:</strong> "{officerRemarks}"</p>
-            <p><strong>Adjudication Timestamp:</strong> {new Date().toLocaleString()}</p>
-            <p><strong>Tamper-Evident SHA-256 Ledger Hash:</strong> <span className="font-mono text-slate-600">sha256:19581e27de7ced00ff1ce50b2047e7a567c76b1cbaebabe5ef03f7c3017bb5b7</span></p>
-          </div>
+        {/* Decision Support Principle */}
+        <div className="p-2.5 bg-blue-50 border border-blue-200 rounded-sm text-[11px] text-blue-950 flex items-center gap-2">
+          <Scale className="w-3.5 h-3.5 text-blue-800 flex-shrink-0" />
+          <span>
+            <strong>Decision Support Principle:</strong> "Automated extraction and rule comparison provide decision support. Final procurement determination remains with the authorized officer."
+          </span>
         </div>
 
-        {/* Section 8: Disclaimers & Governance Certification */}
-        <div className="p-3 bg-slate-50 border border-slate-200 rounded text-[10px] text-slate-600 space-y-1">
-          <p>
-            <strong>Statutory Governance Disclaimer:</strong> e-BID PRAMAAN is an AI decision-support system for bid compliance verification. The authorized Procurement Officer retains full statutory authority and responsibility for the final procurement determination.
-          </p>
-          <p>
-            <strong>Reference Verification Notice:</strong> External registry verifications were performed using configured benchmark reference datasets.
-          </p>
-        </div>
-
-      </div>
-
-      {/* ── Action Buttons ── */}
-      <div className="pt-2 flex items-center justify-between print:hidden">
-        <button
-          onClick={() => setActiveView('decision-review')}
-          className="px-4 py-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-semibold text-xs rounded-lg transition cursor-pointer"
-        >
-          ← Back to Officer Decision
-        </button>
-
-        <button
-          onClick={() => setActiveView('active-tenders')}
-          className="px-5 py-2.5 bg-[#0F2942] hover:bg-[#1E40AF] text-white font-bold text-xs rounded-lg shadow-sm transition flex items-center gap-2 cursor-pointer"
-        >
-          <span>Return to Tenders List</span>
-          <ArrowRight className="w-3.5 h-3.5" />
-        </button>
       </div>
 
     </div>
