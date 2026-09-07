@@ -1,0 +1,68 @@
+{
+  "name": "e-BID PRAMAAN — Clarification & Vendor Notification Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "clarification-trigger",
+        "options": {}
+      },
+      "id": "webhook-trigger-01",
+      "name": "Webhook: Clarification Dispatched",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Extract metadata for notification payload\nconst item = items[0].json;\nreturn [{\n  json: {\n    clarificationId: item.clarificationId,\n    tenderId: item.tenderId,\n    bidderName: item.bidderName,\n    issueCategory: item.issueCategory,\n    deadline: item.responseDeadline,\n    emailSubject: `CPCL GeM Clarification Notice: Tender ${item.tenderId} - ${item.issueCategory}`,\n    emailBody: `Dear Authorized Bidder Representative,\\n\\nA statutory clarification notice has been issued for Tender ${item.tenderId} regarding '${item.issueCategory}'.\\n\\nPlease log in to the e-BID PRAMAAN Vendor Portal and submit your response prior to ${item.responseDeadline}.\\n\\nNote: Clarifications must not alter commercial bid prices.`\n  }\n}];"
+      },
+      "id": "code-prep-02",
+      "name": "Prepare Notification Content",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://backend:8000/api/audit",
+        "method": "POST",
+        "jsonParameters": true,
+        "bodyParametersJson": "={\n  \"actor\": \"n8n Workflow Engine\",\n  \"actorRole\": \"WORKFLOW_AUTOMATION\",\n  \"action\": \"n8n Notification Dispatched\",\n  \"decision\": \"NOTIFICATION_SENT\",\n  \"reason\": \"Automated vendor email and portal notification sent for \" + $json.clarificationId,\n  \"target\": $json.clarificationId,\n  \"evaluationId\": $json.tenderId,\n  \"bidder\": $json.bidderName,\n  \"result\": \"SUCCESS\",\n  \"officerId\": \"SYSTEM-N8N\"\n}"
+      },
+      "id": "http-audit-03",
+      "name": "Log Audit Event to FastAPI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [680, 300]
+    }
+  ],
+  "connections": {
+    "Webhook: Clarification Dispatched": {
+      "main": [
+        [
+          {
+            "node": "Prepare Notification Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Notification Content": {
+      "main": [
+        [
+          {
+            "node": "Log Audit Event to FastAPI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

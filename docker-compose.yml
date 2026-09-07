@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  # 1. PostgreSQL Database with pgvector extension
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: ebid_postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-ebid_pramaan}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres_secure_cpcl_2026}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ebid_pramaan"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. FastAPI Backend Application & Compliance Engine
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ebid_backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - ENVIRONMENT=production
+      - DATABASE_URL=postgresql://postgres:postgres_secure_cpcl_2026@postgres:5432/ebid_pramaan
+      - SECRET_KEY=${SECRET_KEY:-cpcl-ebid-pramaan-production-secret-token-2026}
+      - N8N_BASE_URL=http://n8n:5678
+      - N8N_WEBHOOK_CLARIFICATION=http://n8n:5678/webhook/clarification-trigger
+      - N8N_WEBHOOK_ESCALATION=http://n8n:5678/webhook/escalation-trigger
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ebid_uploads:/app/backend/uploads
+      - ebid_documents:/app/backend/documents
+
+  # 3. n8n Workflow Automation Engine
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: ebid_n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_HOST=n8n
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://localhost:5678/
+      - GENERIC_TIMEZONE=Asia/Kolkata
+    volumes:
+      - n8n_data:/home/node/.n8n
+
+  # 4. React Vite Frontend (Production Preview / Nginx)
+  frontend:
+    build:
+      context: ./sih 26
+      dockerfile: Dockerfile
+    container_name: ebid_frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000/api
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+  ebid_uploads:
+  ebid_documents:
+  n8n_data:

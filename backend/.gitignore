@@ -1,0 +1,30 @@
+# Python cache & bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+
+# Environment files
+.env
+.env.*
+*.env
+*.env.*
+!.env.example
+
+# Local SQLite databases
+*.sqlite
+*.sqlite3
+
+# Uploads & Temp files
+uploads/*
+!uploads/.gitkeep
+
+# Pytest & Coverage
+.pytest_cache/
+.coverage
+htmlcov/

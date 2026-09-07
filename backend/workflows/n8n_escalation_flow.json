@@ -1,0 +1,68 @@
+{
+  "name": "e-BID PRAMAAN — Clarification Escalation & Deadline Monitor",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "escalation-trigger",
+        "options": {}
+      },
+      "id": "webhook-escalation-01",
+      "name": "Webhook: Escalation Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "const item = items[0].json;\nreturn [{\n  json: {\n    clarificationId: item.clarificationId,\n    tenderId: item.tenderId,\n    bidderName: item.bidderName,\n    urgency: 'HIGH_ESCALATION',\n    officerAlert: `URGENT: Clarification ${item.clarificationId} for bidder ${item.bidderName} is approaching deadline (${item.responseDeadline}).`\n  }\n}];"
+      },
+      "id": "code-escalation-02",
+      "name": "Format Escalation Message",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://backend:8000/api/audit",
+        "method": "POST",
+        "jsonParameters": true,
+        "bodyParametersJson": "={\n  \"actor\": \"n8n Escalation Scheduler\",\n  \"actorRole\": \"WORKFLOW_AUTOMATION\",\n  \"action\": \"Clarification Escalated\",\n  \"decision\": \"ESCALATION_TRIGGERED\",\n  \"reason\": \"Response deadline approaching without vendor submission for \" + $json.clarificationId,\n  \"target\": $json.clarificationId,\n  \"evaluationId\": $json.tenderId,\n  \"bidder\": $json.bidderName,\n  \"result\": \"URGENT_REVIEW\",\n  \"officerId\": \"PO-1042\"\n}"
+      },
+      "id": "http-audit-escalation-03",
+      "name": "Log Escalation Event to FastAPI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [680, 300]
+    }
+  ],
+  "connections": {
+    "Webhook: Escalation Trigger": {
+      "main": [
+        [
+          {
+            "node": "Format Escalation Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Escalation Message": {
+      "main": [
+        [
+          {
+            "node": "Log Escalation Event to FastAPI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
