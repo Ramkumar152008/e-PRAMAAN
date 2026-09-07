@@ -6,8 +6,14 @@
  * Seamlessly provides fallback to local verified logic if offline or if backend is unreachable.
  */
 
-const rawApiUrl = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api').trim();
+const host = import.meta.env.VITE_API_HOST;
+let fallbackUrl = 'http://localhost:8000/api';
+if (host) {
+  fallbackUrl = host.startsWith('http') ? `${host}/api` : `https://${host}/api`;
+}
+const rawApiUrl = (import.meta.env.VITE_API_BASE_URL || fallbackUrl).trim();
 const API_BASE_URL = rawApiUrl.replace(/\/+$/, '');
+
 
 export interface ApiResponse<T> {
   data: T | null;

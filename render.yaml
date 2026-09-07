@@ -27,11 +27,6 @@ services:
         generateValue: true
       - key: CORS_ORIGINS
         value: "*"
-      # Connects to Render PostgreSQL database if provisioned below:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: ebid-pramaan-db
-          property: connectionString
 
   # ─── 2. VITE + REACT FRONTEND STATIC SITE ────────────────────────────────────
   - type: static
@@ -50,17 +45,8 @@ services:
     envVars:
       - key: VITE_BASE_PATH
         value: "/"
-      - key: VITE_API_BASE_URL
+      - key: VITE_API_HOST
         fromService:
           type: web
           name: ebid-pramaan-backend
-          property: url
-          path: /api
-
-databases:
-  # ─── 3. MANAGED POSTGRESQL DATABASE ─────────────────────────────────────────
-  - name: ebid-pramaan-db
-    region: oregon
-    plan: free
-    databaseName: ebid_pramaan
-    user: ebid_admin
+          property: host
